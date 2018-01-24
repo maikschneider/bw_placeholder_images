@@ -16,6 +16,9 @@ namespace Blueways\BwPlaceholderImages\Resource\Extractor;
 
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
+use TYPO3\CMS\Extbase\Service\ImageService;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
+use ColorThief\ColorThief;
 
 /**
  * Class DominantColorsExtractor
@@ -23,12 +26,6 @@ use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
  */
 class DominantColorsExtractor implements ExtractorInterface
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Service\ImageService
-     * @inject
-     */
-    protected $imageService;
-
     /**
      * @return array
      */
@@ -50,7 +47,7 @@ class DominantColorsExtractor implements ExtractorInterface
      */
     public function getPriority()
     {
-        return 10;
+        return 11;
     }
 
     /**
@@ -58,7 +55,7 @@ class DominantColorsExtractor implements ExtractorInterface
      */
     public function getExecutionPriority()
     {
-        return 10;
+        return 11;
     }
 
     /**
@@ -79,12 +76,26 @@ class DominantColorsExtractor implements ExtractorInterface
     {
         $metaData = [];
 
-        $img3x3 = $this->imageService->applyProcessingInstructions($file, array('width' => '3c', 'height' => '3c'));
-        $imageUri = $this->imageService->getImageUri($img3x3);
+        $width = $file->getProperty('width');
+        $height = $file->getProperty('height');
 
-        if ($imageUri) {
-            $metaData['dominant_colors'] = $imageUri;
+        $width13 = ceil($width / 3) - 1;
+        $height13 = ceil($height / 3) - 1;
+
+        $heights = [0, $height13, ($height13 * 2)];
+        $widths = [0, $width13, ($width13 * 2)];
+
+        $file_content = $file->getContents();
+
+        for($i=0; $i<3; $i++){
+            for($j=0; $j<3; $j++){
+                $color = ColorThief::getColor($file_content, 10, ['x' => $widths[$i], 'y' => $heights[$j], 'w' => $width13, 'h' => $height13]);
+                if($color) $colors[$i][$j] = '#' . dechex($color[0]) . dechex($color[1]) . dechex($color[2]);
+            }
         }
+
+        $metaData['dominant_colors'] = json_encode($colors);
+
         return $metaData;
     }
 }
