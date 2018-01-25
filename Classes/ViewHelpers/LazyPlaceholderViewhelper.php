@@ -43,7 +43,7 @@ class LazyPlaceholderViewhelper extends ImageViewHelper implements \TYPO3Fluid\F
             $dominantColors = $image->getProperty('dominant_colors');
 
             $base64ImageService = self::getBase64ImageService();
-            $svg = $base64ImageService->generateSvg($dominantColors, $arguments['width'], $arguments['height']);
+            $svg = $base64ImageService->generateSvg($dominantColors, $arguments['width'] ? $arguments['width'] : 1, $arguments['height'] ? $arguments['height'] : 1);
 
             return $svg;
         } catch (ResourceDoesNotExistException $e) {
