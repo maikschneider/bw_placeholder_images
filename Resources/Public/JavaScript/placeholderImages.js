@@ -70,6 +70,10 @@ var PlaceholderImages = {
                     if(!timeoutBeforeReflow){
 
                         setTimeout(function(){
+                            // trigger optional callback
+                            var cb = entry.target.getAttribute('data-lazy-callback');
+                            if(cb) window[cb](entry.target);
+
                             $(document).foundation();
                             timeoutBeforeReflow = false;
                         }, 100);
