@@ -7,7 +7,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Blueways\BwPlaceholderImages\Service\Base64ImageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class LazyPlaceholderViewhelper extends ImageViewHelper implements \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface
+class LazyPlaceholderViewHelper extends ImageViewHelper implements \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface
 {
 
     public function initilizeArguments()
