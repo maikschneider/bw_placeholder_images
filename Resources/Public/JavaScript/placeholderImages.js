@@ -18,7 +18,7 @@ var PlaceholderImages = {
     observerConfig: {
         root: null,
         rootMargin: "0px",
-        threshold: [0.8]
+        threshold: [0.1]
     },
 
 
