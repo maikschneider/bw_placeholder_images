@@ -1,6 +1,6 @@
 ![](Documentation/example.jpg)
 
-# TYPO3 Extension: Placeholder Images 
+# TYPO3 Extension: Placeholder Images
 
 Generates SVG inline placeholder images from FAL Media elements. The [Foundation Interchange plugin](https://foundation.zurb.com/sites/docs/interchange.html) is configured to resolve the right responsive image. The SVG placeholder consists of three gradients with 9 different colors from the original FAL image to make it look more natural.
 
@@ -23,7 +23,7 @@ This extension is currently composer based. The next version will have shipped d
 
 ## Configuration
 
-The Javascript File is automatically included via ```includeJSFooterLibs```. This can be disabled by unsetting 
+The Javascript File is automatically included via ```includeJSFooterLibs```. This can be disabled by unsetting
 
 ```
 plugin.bw_placeholder_images.settings.placeholderImagesJS = EXT:bw_placeholder_images/Resources/Public/JavaScript/placeholderImages.js
@@ -42,37 +42,37 @@ Register the viewhelpers in any fluid template.
 ```
 #### bw:lazyImage
 
-This viewhelper acts like the normal ```<f:image />``` viewhelper, however there is an svg image output of the referenced ```src``` or ```image```. The final images are added via ```additionalAttributes``` in Foundation Interchange style. 
+This viewhelper acts like the normal ```<f:image />``` viewhelper, however there is an svg image output of the referenced ```src``` or ```image```. The final images are added via ```additionalAttributes``` in Foundation Interchange style.
 
 Example with different crop variants:
 
 ```html
-<bw:lazyImage 
-	image="{mediaElement}" 
-	cropVariant="small" 
-	width="585" 
-	additionalAttributes="{data-lazy-interchange: '
-		[{f:uri.image(image:mediaElement,maxWidth:\'600\', cropVariant:\'small\')}, small], 
-		[{f:uri.image(image:mediaElement,maxWidth:\'500\', cropVariant:\'medium\')}, medium], 
-		[{f:uri.image(image:mediaElement,maxWidth:\'450\', cropVariant:\'large\')}, large]
-	'}" 
+<bw:lazyImage
+    image="{mediaElement}"
+    cropVariant="small"
+    width="585"
+    additionalAttributes="{data-lazy-interchange: '
+        [{f:uri.image(image:mediaElement,maxWidth:\'600\', cropVariant:\'small\')}, small],
+        [{f:uri.image(image:mediaElement,maxWidth:\'500\', cropVariant:\'medium\')}, medium],
+        [{f:uri.image(image:mediaElement,maxWidth:\'450\', cropVariant:\'large\')}, large]
+    '}"
 />
-``` 
+```
 
 #### bw:lazyPlaceholder
 
-Acts like ```<f:uri.image />``` viewhelper. 
+Acts like ```<f:uri.image />``` viewhelper.
 
 Foundation Interchange can handle responsive background images, this viewhelper helps to generate the nessecary Output of an image resource path.
 
 Example without crop variant and only one final image for all sizes:
 
 ```html
-<div 
-	style='background-image: url("{bw:lazyPlaceholder(src:'{image.properties.uid}')}");' 
-	data-lazy-interchange="[{f:uri.image(src:'{image.properties.uid}', maxWidth:'640')}, small]"
+<div
+    style='background-image: url("{bw:lazyPlaceholder(src:'{image.properties.uid}')}");'
+    data-lazy-interchange="[{f:uri.image(src:'{image.properties.uid}', maxWidth:'640')}, small]"
 ></div>
-```	
+```
 Attention: The ```style=''``` Tag needs to be rendered with single quotes.
 
 
@@ -80,3 +80,4 @@ Attention: The ```style=''``` Tag needs to be rendered with single quotes.
 
 * include dependencies in package
 * make fallback color editable via typoscript
+* animate image switch
