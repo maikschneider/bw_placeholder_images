@@ -67,19 +67,13 @@ var PlaceholderImages = {
                     var dataInterchangeAttr = entry.target.getAttribute('data-lazy-interchange');
                     entry.target.setAttribute('data-interchange', dataInterchangeAttr);
 
-                    if(!timeoutBeforeReflow){
+                    // trigger optional callback
+                    var cb = entry.target.getAttribute('data-lazy-callback');
+                    if(cb) window[cb](entry.target);
 
-                        setTimeout(function(){
-                            // trigger optional callback
-                            var cb = entry.target.getAttribute('data-lazy-callback');
-                            if(cb) window[cb](entry.target);
-
-                            $(document).foundation();
-                            timeoutBeforeReflow = false;
-                        }, 100);
-                    }
-                    timeoutBeforeReflow = true;
-
+                    // reflow to start interchange plugin
+                    $(entry.target).foundation();
+                    timeoutBeforeReflow = false;
                 }
             });
         }, self.observerConfig);
