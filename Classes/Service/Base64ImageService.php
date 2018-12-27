@@ -25,7 +25,7 @@ class Base64ImageService implements SingletonInterface
     {
         $colors = json_decode($color);
 
-        if(!count($colors)) return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ".$width." ".$height."'%3E%3Crect width='100%25' height='100%25' fill='%23".substr($color, 1)."' /%3E%3C/svg%3E";
+        if(!$colors || !sizeof($colors)) return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ".$width." ".$height."'%3E%3Crect width='100%25' height='100%25' fill='%23".substr($color, 1)."' /%3E%3C/svg%3E";
 
         for($i=0;$i<count($colors);$i++){
             for($j=0;$j<count($colors[$i]);$j++){
