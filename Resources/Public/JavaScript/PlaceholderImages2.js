@@ -31,20 +31,23 @@ function loadImages(images) {
 $(function () {
 
     const $images = $('.placeholderimage');
-
     const screenSize = Foundation.MediaQuery.current;
     const sizes = ['small', 'medium', 'large', 'xlarge', 'xxlarge'];
+    const observerConfig = {
+        root: null,
+        rootMargin: "0px",
+        threshold: [0.5]
+    };
 
-    $images.each(function (i, img) {
 
+    function loadAndDisplayImage(img) {
 
         let imagePath = $(img).attr('data-placeholder-image-small');
         let screenSizeToLoad = 'small';
 
         // find the last greatest screen size to load
-        for (let i = sizes.indexOf(screenSize); i>=0; i=i-1) {
-            console.log($(img).attr('data-placeholder-image-' + sizes[i]));
-            if($(img).attr('data-placeholder-image-' + sizes[i])){
+        for (let i = sizes.indexOf(screenSize); i >= 0; i = i - 1) {
+            if ($(img).attr('data-placeholder-image-' + sizes[i])) {
                 imagePath = $(img).attr('data-placeholder-image-' + sizes[i]);
                 screenSizeToLoad = sizes[i];
                 break;
@@ -55,14 +58,28 @@ $(function () {
             $(img).addClass(screenSizeToLoad);
             $(img).addClass('loaded');
         });
+    }
 
+    const observer = new IntersectionObserver(function (entries) {
+
+        entries.forEach(function (entry) {
+            if (entry.intersectionRatio > 0) {
+                observer.unobserve(entry.target);
+
+                loadAndDisplayImage(entry.target);
+            }
+        });
+
+    }, observerConfig);
+
+    // bind images
+    $images.each(function (i, img) {
+        // if observer function not available load images directly
+        if (IntersectionObserver) {
+            observer.observe(img);
+        } else {
+            loadAndDisplayImage(img);
+        }
     });
 
-
-    // load the images and start cycling through them after they are loaded
-    /*
-    loadImages(myImages).then(cycleImages).catch(function (err) {
-        console.error(err);
-    });
-    */
 });
