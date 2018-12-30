@@ -1,4 +1,5 @@
 <?php
+
 namespace Blueways\BwPlaceholderImages\Resource\Extractor;
 
 /*
@@ -19,13 +20,18 @@ use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use ColorThief\ColorThief;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * Class DominantColorsExtractor
+ *
  * @package Blueways\BwPlaceholderImages\Resource\Extractor
  */
-class DominantColorsExtractor implements ExtractorInterface
+class DominantColorsExtractor implements ExtractorInterface, \Psr\Log\LoggerAwareInterface
 {
+
+    use LoggerAwareTrait;
+
     /**
      * @return array
      */
@@ -76,6 +82,9 @@ class DominantColorsExtractor implements ExtractorInterface
     {
         $metaData = [];
 
+        $this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
+        $this->logger->info('Execute file ' . $file->getName());
+
         $width = $file->getProperty('width');
         $height = $file->getProperty('height');
 
@@ -87,11 +96,18 @@ class DominantColorsExtractor implements ExtractorInterface
 
         $file_content = $file->getContents();
 
-        for($i=0; $i<3; $i++){
-            for($j=0; $j<3; $j++){
-                $color = ColorThief::getColor($file_content, 10, ['x' => $widths[$i], 'y' => $heights[$j], 'w' => $width13, 'h' => $height13]);
-                if($color) $colors[$i][$j] = '#' . dechex($color[0]) . dechex($color[1]) . dechex($color[2]);
+        try {
+            for ($i = 0; $i < 3; $i++) {
+                for ($j = 0; $j < 3; $j++) {
+                    $color = ColorThief::getColor($file_content, 10,
+                        ['x' => $widths[$i], 'y' => $heights[$j], 'w' => $width13, 'h' => $height13]);
+                    if ($color) {
+                        $colors[$i][$j] = '#' . dechex($color[0]) . dechex($color[1]) . dechex($color[2]);
+                    }
+                }
             }
+        } catch (\RuntimeException $e) {
+            $this->logger->error('Execute file ' . $file->getName() . 'could not be processed', [$e->getMessage()]);
         }
 
         $metaData['dominant_colors'] = json_encode($colors);

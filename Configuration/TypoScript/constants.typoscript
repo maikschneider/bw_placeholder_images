@@ -1,3 +1,3 @@
 plugin.bw_placeholder_images.settings.intersectionObserverJS = EXT:bw_placeholder_images/Resources/Public/JavaScript/intersection-observer.js
-plugin.bw_placeholder_images.settings.placeholderImagesJS = EXT:bw_placeholder_images/Resources/Public/JavaScript/placeholderImages.js
+plugin.bw_placeholder_images.settings.placeholderImagesJS = EXT:bw_placeholder_images/Resources/Public/JavaScript/PlaceholderImages2.js
 plugin.bw_placeholder_images.settings.placeholderImagesCSS = EXT:bw_placeholder_images/Resources/Public/Css/PlaceholderImages.css
