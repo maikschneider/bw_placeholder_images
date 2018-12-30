@@ -25,7 +25,10 @@ class Base64ImageService implements SingletonInterface
     {
         $colors = json_decode($color);
 
-        if(!$colors || !sizeof($colors)) return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ".$width." ".$height."'%3E%3Crect width='100%25' height='100%25' fill='%23".substr($color, 1)."' /%3E%3C/svg%3E";
+        if(!$colors || !sizeof($colors)) {
+            $color = substr($this->getFallbackColor(), 1);
+            return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ".$width." ".$height."'%3E%3Crect width='100%25' height='100%25' fill='%23".$color."' /%3E%3C/svg%3E";
+        }
 
         for($i=0;$i<count($colors);$i++){
             for($j=0;$j<count($colors[$i]);$j++){
@@ -37,5 +40,13 @@ class Base64ImageService implements SingletonInterface
         $svg = "data:image/svg+xml,%3csvg viewBox='0 0 ".$width." ".$height."' xmlns='http://www.w3.org/2000/svg'%3e%3cdefs%3e%3clinearGradient id='b'%3e%3cstop offset='0' stop-color='%23".$colors[0][0]."'/%3e%3cstop offset='50%25' stop-color='%23".$colors[1][0]."'/%3e%3cstop offset='100%25' stop-color='%23".$colors[2][0]."'/%3e%3c/linearGradient%3e%3clinearGradient id='c'%3e%3cstop offset='0' stop-color='%23".$colors[2][0]."'/%3e%3cstop offset='50%25' stop-color='%23".$colors[2][1]."'/%3e%3cstop offset='100%25' stop-color='%23".$colors[2][2]."'/%3e%3c/linearGradient%3e%3clinearGradient id='d' x2='0' y2='1'%3e%3cstop offset='0' stop-color='%23".$colors[1][0]."'/%3e%3cstop offset='50%25' stop-color='%23".$colors[1][1]."'/%3e%3cstop offset='100%25' stop-color='%23".$colors[1][2]."'/%3e%3c/linearGradient%3e%3clinearGradient id='a' x2='0' y2='1'%3e%3cstop offset='0' stop-color='white' stop-opacity='0'/%3e%3cstop offset='50%25' stop-color='white'/%3e%3cstop offset='100%25' stop-color='white' stop-opacity='0'/%3e%3c/linearGradient%3e%3cmask id='e'%3e%3cpath fill='url(%23a)' d='M0 0h".$width."v".$height."H0z'/%3e%3c/mask%3e%3c/defs%3e%3cpath fill='url(%23b)' d='M0 0h".$width."v".$height05."H0z'/%3e%3cpath fill='url(%23c)' d='M0 ".$height05."h".$width."v".$height05."H0z'/%3e%3cpath fill='url(%23d)' mask='url(%23e)' d='M0 0h".$width."v".$height."H0z'/%3e%3c/svg%3e";
 
         return $svg;
+    }
+
+    protected function getFallbackColor()
+    {
+        $configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
+        $typoscript = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+
+        return $typoscript['plugin.']['bw_placeholder_images.']['settings.']['fallbackColor'];
     }
 }
