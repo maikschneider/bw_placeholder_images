@@ -15,6 +15,7 @@ namespace Blueways\BwPlaceholderImages\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Blueways\BwPlaceholderImages\Service\Base64ImageService;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -74,9 +75,13 @@ class ResponsiveBackgroundImageViewHelper extends AbstractViewHelper
             $dominantColors = $image->getProperty('dominant_colors');
             $colors = json_decode($dominantColors);
 
-            $id = 'p' . $image->getHashedIdentifier();
+            $id = 'p' . $image->getHashedIdentifier() . GeneralUtility::getRandomHexString(4);
 
-            $css = '#' . $id . ':after { background-color: ' . $colors[1][1] . '; }';
+            $base64ImageService = self::getBase64ImageService();
+            $svg = $base64ImageService->generateSvg($dominantColors, $arguments['width'] ? $arguments['width'] : 1,
+                $arguments['height'] ? $arguments['height'] : 1);
+            //$css = '#' . $id . ':after { background-color: ' . $colors[1][1] . '; }';
+            $css = '#' . $id . ':after { background-image: url("' . $svg . '") }';
             $dataAttr = '';
 
             $sizes = ['small', 'medium', 'large', 'xlarge', 'xxlarge'];
@@ -143,5 +148,17 @@ class ResponsiveBackgroundImageViewHelper extends AbstractViewHelper
         /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         return $objectManager->get(ImageService::class);
+    }
+
+    /**
+     * Return an instance of Base64ImageService using object manager
+     *
+     * @return Base64ImageService
+     */
+    protected static function getBase64ImageService()
+    {
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        return $objectManager->get(Base64ImageService::class);
     }
 }

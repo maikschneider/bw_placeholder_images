@@ -1,4 +1,5 @@
 <?php
+
 namespace Blueways\BwPlaceholderImages\ViewHelpers;
 
 /*
@@ -13,16 +14,17 @@ namespace Blueways\BwPlaceholderImages\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use Blueways\BwPlaceholderImages\Service\Base64ImageService;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
  * Resizes a given image (if required) and renders the respective img tag with a placeholder image in src and
  * the real image in data-src
- *
  * = Example =
- *
  * <code title="Image Object">
  * <f:image image="{imageObject}" />
  * </code>
@@ -32,6 +34,7 @@ use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
  */
 class LazyImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
 {
+
     /**
      * @var string
      */
@@ -74,39 +77,54 @@ class LazyImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBa
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('alt', 'string', 'Specifies an alternate text for an image', false);
 
-        $this->registerArgument('src', 'string', 'a path to a file, a combined FAL identifier or an uid (int). If $treatIdAsReference is set, the integer is considered the uid of the sys_file_reference record. If you already got a FAL object, consider using the $image parameter instead');
+        $this->registerArgument('src', 'string',
+            'a path to a file, a combined FAL identifier or an uid (int). If $treatIdAsReference is set, the integer is considered the uid of the sys_file_reference record. If you already got a FAL object, consider using the $image parameter instead');
         $this->registerArgument('treatIdAsReference', 'bool', 'given src argument is a sys_file_reference record');
         $this->registerArgument('image', 'object', 'a FAL object');
-        $this->registerArgument('crop', 'string|bool', 'overrule cropping of image (setting to FALSE disables the cropping set in FileReference)');
-        $this->registerArgument('cropVariant', 'string', 'select a cropping variant, in case multiple croppings have been specified or stored in FileReference', false, 'default');
+        $this->registerArgument('crop', 'string|bool',
+            'overrule cropping of image (setting to FALSE disables the cropping set in FileReference)');
+        $this->registerArgument('cropVariant', 'string',
+            'select a cropping variant, in case multiple croppings have been specified or stored in FileReference',
+            false, 'default');
 
-        $this->registerArgument('width', 'string', 'width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.', false);
-        $this->registerArgument('height', 'string', 'height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.', false);
+        $this->registerArgument('width', 'string',
+            'width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.',
+            false);
+        $this->registerArgument('height', 'string',
+            'height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.',
+            false);
         $this->registerArgument('minWidth', 'int', 'minimum width of the image');
         $this->registerArgument('minHeight', 'int', 'minimum width of the image');
         $this->registerArgument('maxWidth', 'int', 'minimum width of the image');
         $this->registerArgument('maxHeight', 'int', 'minimum width of the image');
         $this->registerArgument('absolute', 'bool', 'Force absolute URL', false, false);
 
-        $this->registerArgument('fallbackBgColor', 'string', 'Fallback color to use when image has no dominant color', false, '#EEEEEE');
+        $this->registerArgument('fallbackBgColor', 'string', 'Fallback color to use when image has no dominant color',
+            false, '#EEEEEE');
+        $this->registerArgument('small', 'array', 'The string to lowercase.', false);
+        $this->registerArgument('medium', 'array', 'The string to lowercase.', false);
+        $this->registerArgument('large', 'array', 'The string to lowercase.', false);
+        $this->registerArgument('xlarge', 'array', 'The string to lowercase.', false);
+        $this->registerArgument('xxlarge', 'array', 'The string to lowercase.', false);
     }
 
     /**
      * Resizes a given image (if required) and renders the respective img tag
      *
      * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Image/
-     *
      * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      * @return string Rendered tag
      */
     public function render()
     {
         if ((is_null($this->arguments['src']) && is_null($this->arguments['image'])) || (!is_null($this->arguments['src']) && !is_null($this->arguments['image']))) {
-            throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('You must either specify a string src or a File object.', 1382284106);
+            throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('You must either specify a string src or a File object.',
+                1382284106);
         }
 
         try {
-            $image = $this->imageService->getImage($this->arguments['src'], $this->arguments['image'], $this->arguments['treatIdAsReference']);
+            $image = $this->imageService->getImage($this->arguments['src'], $this->arguments['image'],
+                $this->arguments['treatIdAsReference']);
             $cropString = $this->arguments['crop'];
             if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {
                 $cropString = $image->getProperty('crop');
@@ -118,7 +136,8 @@ class LazyImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBa
                 $crop = $cropVariantCollection->getCropArea($cropVariant)->makeAbsoluteBasedOnFile($image);
 
                 if (!$cropVariantCollection->getFocusArea($cropVariant)->isEmpty()) {
-                    $this->tag->addAttribute('data-focus-area', $cropVariantCollection->getFocusArea($cropVariant)->makeAbsoluteBasedOnFile($image));
+                    $this->tag->addAttribute('data-focus-area',
+                        $cropVariantCollection->getFocusArea($cropVariant)->makeAbsoluteBasedOnFile($image));
                 }
             } else {
                 $crop = $cropString;
@@ -139,13 +158,61 @@ class LazyImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBa
             if ($image->getProperty('dominant_colors')) {
                 $dominantColors = $image->getProperty('dominant_colors');
             }
-            $this->tag->addAttribute('src', $this->base64ImageService->generateSvg($dominantColors, $processedImage->getProperty('width'), $processedImage->getProperty('height')));
-            $this->tag->addAttribute('data-src', $imageUri);
+
+            $svg = $this->base64ImageService->generateSvg($dominantColors, $processedImage->getProperty('width'),
+                $processedImage->getProperty('height'));
+            $this->tag->addAttribute('src', $svg);
+
+            $id = 'p' . $image->getHashedIdentifier() . GeneralUtility::getRandomHexString(4);
+            $css = '#' . $id . ':after { background-image: url("' . $svg . '") }';
+
+            $sizes = ['small', 'medium', 'large', 'xlarge', 'xxlarge'];
+
+            foreach ($sizes as $size) {
+
+                // abbort if size was not used in viewhelper
+                if (!isset($this->arguments[$size])) {
+                    continue;
+                }
+
+                $sizeConf = $this->arguments[$size];
+
+                // create image uri for speficify size setting
+                $cropString = $sizeConf['crop'];
+                if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {
+                    $cropString = $image->getProperty('crop');
+                }
+                $cropVariantCollection = CropVariantCollection::create((string)$cropString);
+                $cropVariant = $sizeConf['cropVariant'] ?: 'default';
+                $cropArea = $cropVariantCollection->getCropArea($cropVariant);
+                $processingInstructions = [
+                    'width' => $sizeConf['width'],
+                    'height' => $sizeConf['height'],
+                    'minWidth' => $sizeConf['minWidth'],
+                    'minHeight' => $sizeConf['minHeight'],
+                    'maxWidth' => $sizeConf['maxWidth'],
+                    'maxHeight' => $sizeConf['maxHeight'],
+                    'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
+                ];
+                $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
+                $imageUri = $this->imageService->getImageUri($processedImage, $this->arguments['absolute']);
+
+                // build css and data-attr markup
+                //$css .= '#' . $id . '.loaded.' . $size . ' { background-image: url(' . $imageUri . ');}';
+                $this->tag->addAttribute('data-placeholder-image-' . $size, $imageUri);
+                $this->tag->addAttribute('data-src', $imageUri);
+            }
             $this->tag->addAttribute('width', $processedImage->getProperty('width'));
             $this->tag->addAttribute('height', $processedImage->getProperty('height'));
+            $this->tag->addAttribute('id', $id);
 
             $alt = $image->getProperty('alternative');
             $title = $image->getProperty('title');
+
+            // add css to html head
+            $compress = true;
+            $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+            $pageRenderer->addCssInlineBlock($id, $css, $compress);
 
             // The alt-attribute is mandatory to have valid html-code, therefore add it even if it is empty
             if (empty($this->arguments['alt'])) {
