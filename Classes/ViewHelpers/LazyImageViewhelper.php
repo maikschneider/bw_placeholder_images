@@ -163,7 +163,8 @@ class LazyImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBa
                 $processedImage->getProperty('height'));
             $this->tag->addAttribute('src', $svg);
 
-            $id = 'p' . $image->getHashedIdentifier() . GeneralUtility::getRandomHexString(4);
+            $random = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Crypto\Random::class);
+            $id = 'p' . $image->getHashedIdentifier() . $random->generateRandomHexString(4);
             $css = '#' . $id . ':after { background-image: url("' . $svg . '") }';
 
             $sizes = ['small', 'medium', 'large', 'xlarge', 'xxlarge'];
