@@ -73,9 +73,9 @@ class ResponsiveBackgroundImageViewHelper extends AbstractViewHelper
             $image = $imageService->getImage($src, $image, $treatIdAsReference);
 
             $dominantColors = $image->getProperty('dominant_colors');
-            $colors = json_decode($dominantColors);
 
-            $id = 'p' . $image->getHashedIdentifier() . GeneralUtility::getRandomHexString(4);
+            $random = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Crypto\Random::class);
+            $id = 'p' . $image->getHashedIdentifier() . $random->generateRandomHexString(4);
 
             $base64ImageService = self::getBase64ImageService();
             $svg = $base64ImageService->generateSvg($dominantColors, $arguments['width'] ? $arguments['width'] : 1,
