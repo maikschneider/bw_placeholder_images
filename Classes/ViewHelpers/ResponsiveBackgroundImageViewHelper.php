@@ -65,7 +65,7 @@ class ResponsiveBackgroundImageViewHelper extends AbstractViewHelper
         $treatIdAsReference = $arguments['treatIdAsReference'];
 
         if ((is_null($src) && is_null($image)) || (!is_null($src) && !is_null($image))) {
-            throw new Exception('You must either specify a string src or a File object.', 1460976233);
+            return '';
         }
 
         try {
