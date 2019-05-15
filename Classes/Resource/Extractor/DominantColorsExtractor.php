@@ -80,6 +80,9 @@ class DominantColorsExtractor implements ExtractorInterface, \Psr\Log\LoggerAwar
      */
     public function extractMetaData(File $file, array $previousExtractedData = [])
     {
+        // fix for mittwald server
+        return [];
+
         $metaData = [];
 
         $this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
