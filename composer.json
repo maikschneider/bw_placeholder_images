@@ -1,11 +1,10 @@
 {
     "name": "blueways/bw-placeholder-images",
+    "license": "MIT",
     "type": "typo3-cms-extension",
     "description": "Inline SVG placeholder images with lazy loading",
     "homepage": "https://blueways.de",
-    "license": ["GPL-2.0+"],
     "keywords": ["TYPO3 CMS"],
-    "version": "1.0.3",
     "authors": [
         {
             "name": "Maik Schneider",
@@ -17,9 +16,25 @@
         "typo3/cms-core": "^8.7 || ^9.0",
         "ksubileau/color-thief-php": "^1.3.0"
     },
+    "require-dev": {
+        "typo3/cms-base-distribution": "9.5.*"
+    },
     "autoload": {
         "psr-4": {
             "Blueways\\BwPlaceholderImages\\": "Classes"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "web-dir": "public"
+        }
+    },
+    "config": {
+        "bin-dir": "bin",
+        "vendor-dir": "vendor",
+        "platform": {
+            "php": "7.2"
         }
     }
 }
