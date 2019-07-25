@@ -15,12 +15,12 @@ namespace Blueways\BwPlaceholderImages\Resource\Extractor;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
-use TYPO3\CMS\Extbase\Service\ImageService;
-use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use ColorThief\ColorThief;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
+use TYPO3\CMS\Extbase\Service\ImageService;
 
 /**
  * Class DominantColorsExtractor
@@ -106,11 +106,12 @@ class DominantColorsExtractor implements ExtractorInterface, \Psr\Log\LoggerAwar
                     }
                 }
             }
+
+            $metaData['dominant_colors'] = json_encode($colors);
+
         } catch (\RuntimeException $e) {
             $this->logger->error('Execute file ' . $file->getName() . 'could not be processed', [$e->getMessage()]);
         }
-
-        $metaData['dominant_colors'] = json_encode($colors);
 
         return $metaData;
     }
