@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c1b486985983d511feb0dda58f63656",
+    "content-hash": "7e48f7706a5cf011d8421a90fae44c35",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -4335,6 +4335,50 @@
                 }
             ],
             "description": "Listing of files in the directory",
+            "homepage": "https://typo3.org",
+            "time": "2019-06-25T08:28:51+00:00"
+        },
+        {
+            "name": "typo3/cms-filemetadata",
+            "version": "v9.5.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TYPO3-CMS/filemetadata.git",
+                "reference": "e024ba321bfa720bc392337136025d5ce08e2c51"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TYPO3-CMS/filemetadata/zipball/e024ba321bfa720bc392337136025d5ce08e2c51",
+                "reference": "e024ba321bfa720bc392337136025d5ce08e2c51",
+                "shasum": ""
+            },
+            "require": {
+                "typo3/cms-core": "9.5.8"
+            },
+            "conflict": {
+                "typo3/cms": "*"
+            },
+            "replace": {
+                "filemetadata": "*"
+            },
+            "type": "typo3-cms-framework",
+            "extra": {
+                "typo3/cms": {
+                    "extension-key": "filemetadata"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "TYPO3 Core Team",
+                    "role": "Developer",
+                    "email": "typo3cms@typo3.org"
+                }
+            ],
+            "description": "Add advanced metadata to File.",
             "homepage": "https://typo3.org",
             "time": "2019-06-25T08:28:51+00:00"
         },
