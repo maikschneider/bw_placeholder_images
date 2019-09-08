@@ -83,7 +83,7 @@ class DominantColorsExtractor implements ExtractorInterface, \Psr\Log\LoggerAwar
         $metaData = [];
 
         $this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
-        $this->logger->info('Execute file ' . $file->getName());
+        $this->logger->info('Dominant color extractor: Execute file ' . $file->getName());
 
         $width = $file->getProperty('width');
         $height = $file->getProperty('height');
