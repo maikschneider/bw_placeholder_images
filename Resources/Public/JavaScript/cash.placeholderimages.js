@@ -96,8 +96,7 @@ $(function () {
         }
     });
 
-    $(window).off('changed.bw.mediaquery').on('changed.bw.mediaquery', () => {
-
+    function checkImages() {
         if (screenSize === $.MediaQuery.current()) return;
 
         screenSize = $.MediaQuery.current();
@@ -110,7 +109,10 @@ $(function () {
             }
             loadAndDisplayImage(img);
         });
+    }
 
-    });
+    $(window).off('changed.bw.mediaquery').on('changed.bw.mediaquery', checkImages);
+
+    checkImages();
 
 });
