@@ -76,6 +76,10 @@ $(function () {
                 observer.unobserve(entry.target);
 
                 loadAndDisplayImage(entry.target);
+
+                // trigger optional callback
+                const cb = entry.target.getAttribute('data-lazy-callback');
+                if (cb) window[cb](entry.target);
             }
         });
 
