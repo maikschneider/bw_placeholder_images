@@ -16,6 +16,7 @@ namespace Blueways\BwPlaceholderImages\ViewHelpers;
  */
 
 use Blueways\BwPlaceholderImages\Service\Base64ImageService;
+use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -159,8 +160,9 @@ class LazyImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBa
                 $dominantColors = $image->getProperty('dominant_colors');
             }
 
-            $svg = $this->base64ImageService->generateSvg($dominantColors, $processedImage->getProperty('width'),
-                $processedImage->getProperty('height'));
+            $svgWidth = $crop instanceof Area ? $crop->asArray()['width'] : $processedImage->getProperty('width');
+            $svgHeight = $crop instanceof Area ? $crop->asArray()['height'] : $processedImage->getProperty('height');
+            $svg = $this->base64ImageService->generateSvg($dominantColors, $svgWidth, $svgHeight);
             $this->tag->addAttribute('src', $svg);
 
             $random = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Crypto\Random::class);
