@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Resizes a given image (if required) and renders the respective img tag with a placeholder image in src and
@@ -33,7 +34,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
  * <img alt="alt set in image record" src="data:image/svg+xml;base64...." data-src="fileadmin/_processed_/323223424.png" width="396" height="375" />
  * </output>
  */
-class LazyImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class LazyImageViewHelper extends AbstractTagBasedViewHelper
 {
 
     /**
@@ -124,8 +125,8 @@ class LazyImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBa
         }
 
         try {
-            $image = $this->imageService->getImage($this->arguments['src'], $this->arguments['image'],
-                $this->arguments['treatIdAsReference']);
+            $image = $this->imageService->getImage($this->arguments['src'] ?? '', $this->arguments['image'],
+                (bool)$this->arguments['treatIdAsReference']);
             $cropString = $this->arguments['crop'];
             if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {
                 $cropString = $image->getProperty('crop');
