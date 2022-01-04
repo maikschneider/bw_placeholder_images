@@ -23,8 +23,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * @TODO: Documentation
@@ -58,18 +58,18 @@ class ResponsiveBackgroundImageViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $src = $arguments['src'];
+        $src = $arguments['src'] ?? '';
         $image = $arguments['image'];
-        $absolute = $arguments['absolute'];
+        $absolute = (bool)$arguments['absolute'];
 
         $treatIdAsReference = $arguments['treatIdAsReference'];
 
-        if ((is_null($src) && is_null($image)) || (!is_null($src) && !is_null($image))) {
+        if ((!$src && !$image) || ($src && $image)) {
             return '';
         }
 
         try {
-            $imageService = self::getImageService();
+            $imageService = GeneralUtility::makeInstance(ImageService::class);
             $image = $imageService->getImage($src, $image, $treatIdAsReference);
 
             $dominantColors = $image->getProperty('dominant_colors');
@@ -162,3 +162,4 @@ class ResponsiveBackgroundImageViewHelper extends AbstractViewHelper
         return $objectManager->get(Base64ImageService::class);
     }
 }
+
