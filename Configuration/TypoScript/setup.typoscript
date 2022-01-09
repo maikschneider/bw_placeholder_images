@@ -1,5 +1,11 @@
-page.includeJSFooter.intersectionObserver = {$plugin.bw_placeholder_images.settings.intersectionObserverJS}
-page.includeJSFooter.placeholderImages = {$plugin.bw_placeholder_images.settings.placeholderImagesJS}
-page.includeCSS.placeholderImages = {$plugin.bw_placeholder_images.settings.placeholderImagesCSS}
+page {
+	includeCSS.placeholderImages = {$plugin.bw_placeholder_images.settings.placeholderImagesCSS}
+	includeJSFooter.intersectionObserver = {$plugin.bw_placeholder_images.settings.intersectionObserverJS}
+	includeJSFooter.placeholderImages = {$plugin.bw_placeholder_images.settings.placeholderImagesJS}
+}
 
-plugin.bw_placeholder_images.settings.fallbackColor = {$plugin.bw_placeholder_images.settings.fallbackColor}
+plugin.bw_placeholder_images {
+	settings {
+		fallbackColor = {$plugin.bw_placeholder_images.settings.fallbackColor}
+	}
+}

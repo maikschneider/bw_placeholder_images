@@ -1,4 +1,8 @@
-plugin.bw_placeholder_images.settings.fallbackColor = #CCCCCC
-plugin.bw_placeholder_images.settings.intersectionObserverJS = EXT:bw_placeholder_images/Resources/Public/JavaScript/intersection-observer.js
-plugin.bw_placeholder_images.settings.placeholderImagesJS = EXT:bw_placeholder_images/Resources/Public/JavaScript/PlaceholderImages2.js
-plugin.bw_placeholder_images.settings.placeholderImagesCSS = EXT:bw_placeholder_images/Resources/Public/Css/PlaceholderImages.css
+plugin.bw_placeholder_images {
+	settings {
+		fallbackColor = #CCCCCC
+		intersectionObserverJS = EXT:bw_placeholder_images/Resources/Public/JavaScript/intersection-observer.js
+		placeholderImagesJS = EXT:bw_placeholder_images/Resources/Public/JavaScript/PlaceholderImages2.js
+		placeholderImagesCSS = EXT:bw_placeholder_images/Resources/Public/Css/PlaceholderImages.css
+	}
+}
