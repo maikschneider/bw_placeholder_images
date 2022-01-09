@@ -14,13 +14,19 @@ $additionalColumns = [
             'default' => '',
         ],
     ],
+    'triangular_placeholder' => [
+        'exclude' => 0,
+        'label' => 'LLL:EXT:bw_placeholder_images/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.triangular_placeholder',
+        'config' => [
+            'type' => 'input',
+        ]
+    ]
 ];
-
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_file_metadata', $additionalColumns);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'sys_file_metadata',
-    'dominant_colors',
+    '--div--;LLL:EXT:bw_placeholder_images/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.placeholder,dominant_colors,triangular_placeholder',
     TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE,
-    'after:source'
+    'after:categories'
 );

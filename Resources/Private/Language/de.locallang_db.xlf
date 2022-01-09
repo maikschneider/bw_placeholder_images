@@ -5,13 +5,13 @@
         <header/>
         <body>
             <trans-unit id="sys_file_metadata.dominant_colors">
-                <source>Dominant colors</source>
+                <source>Dominate Farben</source>
             </trans-unit>
             <trans-unit id="sys_file_metadata.triangular_placeholder">
-                <source>Triangular placeholder</source>
+                <source>Triangular Platzhalter</source>
             </trans-unit>
             <trans-unit id="sys_file_metadata.placeholder">
-                <source>Placeholder</source>
+                <source>Platzhalter</source>
             </trans-unit>
         </body>
     </file>
