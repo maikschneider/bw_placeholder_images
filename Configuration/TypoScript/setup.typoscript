@@ -11,3 +11,21 @@ plugin.bw_placeholder_images {
 		triangularApiKey = {$plugin.bw_placeholder_images.settings.triangularApiKey}
 	}
 }
+
+triangular = PAGE
+triangular {
+	typeNum = 1641825616
+	10 = USER
+	10.userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+	10.extensionName = BwPlaceholderImages
+	10.pluginName = Triangular
+	10.vendorName = Blueways
+	config {
+		disableAllHeaderCode = 1
+		additionalHeaders = Content-type:application/json
+		xhtml_cleaning = 0
+		admPanel = 0
+		debug = 0
+		no_cache = 1
+	}
+}

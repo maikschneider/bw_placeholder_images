@@ -78,6 +78,7 @@ class TriangularUtility
 
         // construct POST request
         $fileContent = $file->getForLocalProcessing();
+        $callbackUrl = $this->getCallbackUrl();
         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', $settings['triangularServer'], [
             'headers' => [
@@ -86,7 +87,7 @@ class TriangularUtility
             'multipart' => [
                 [
                     'name' => 'callbackUrl',
-                    'contents' => '@TODO',
+                    'contents' => $callbackUrl
                 ],
                 [
                     'name' => 'file',
@@ -134,7 +135,7 @@ class TriangularUtility
         return $settings['plugin']['bw_placeholder_images']['settings'];
     }
 
-    protected function requestProcessedFile(Queue $queue): bool
+    public function requestProcessedFile(Queue $queue): bool
     {
 
         $settings = $this->getTypoScript();
@@ -187,6 +188,11 @@ class TriangularUtility
         }
 
         return true;
+    }
+
+    private function getCallbackUrl(): string
+    {
+        return '@TODO';
     }
 
 }

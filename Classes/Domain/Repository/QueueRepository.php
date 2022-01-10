@@ -14,4 +14,12 @@ class QueueRepository extends Repository
         $query->setLimit(1);
         return $query->execute();
     }
+
+    public function findByHash($hash)
+    {
+        $query = $this->createQuery();
+        $query->matching($query->equals('hash', $hash));
+        $query->setLimit(1);
+        return $query->execute();
+    }
 }
