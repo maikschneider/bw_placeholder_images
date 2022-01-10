@@ -1,0 +1,17 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  Blueways\BwPlaceholderImages\:
+    resource: '../Classes/*'
+    exclude: '../Classes/Domain/Model/*'
+
+  Blueways\BwPlaceholderImages\Command\RequestTriangularImageCommand:
+    tags:
+      - name: 'console.command'
+        command: 'placeholder:requestTriangularImage'
+        description: 'Starts the routine of processing and downloading triangular images'
+        # not required, defaults to false
+        hidden: false
