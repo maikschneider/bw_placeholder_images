@@ -169,7 +169,25 @@ class TriangularUtility
 
     private function handleSvgResponse(int $fileUid, ResponseInterface $response): bool
     {
+        if ($response->getStatusCode() !== 200 || $response->getHeader('Content-Type')[0] !== 'image/svg+xml') {
+            return false;
+        }
 
+        $svg = $response->getBody()->getContents();
+
+        // save svg placeholder
+        $this->metadataQueryBuilder
+            ->update('sys_file_metadata')
+            ->where($this->metadataQueryBuilder->expr()->eq('file', $fileUid))
+            ->set('triangular_placeholder', $svg)
+            ->executeStatement();
+
+        // delete queue item
+        $queue = $this->queueRepository->findOneByFileIdentifier($fileUid)->getFirst();
+        if ($queue) {
+            $this->queueRepository->remove($queue);
+            $this->persistenceManager->persistAll();
+        }
 
         return true;
     }
