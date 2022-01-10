@@ -7,7 +7,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 class QueueRepository extends Repository
 {
 
-    public function findOneByFileIdentifier($fileIdentifier)
+    public function findByFileUid($fileIdentifier)
     {
         $query = $this->createQuery();
         $query->matching($query->equals('sys_file_uid', $fileIdentifier));

@@ -58,13 +58,14 @@ class TriangularUtility
     {
         // validate that sys_file exists
         $file = $this->fileRepository->findByUid($fileUid);
-        if (!$file) {
+        $validMemeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
+        if (!$file || !in_array($file->getMimeType(), $validMemeTypes, true)) {
             return false;
         }
 
         // If already queued, request processed file, no second post
         /** @var Queue|null $queue */
-        $queue = $this->queueRepository->findOneByFileIdentifier($fileUid)->getFirst();
+        $queue = $this->queueRepository->findByFileUid($fileUid)->getFirst();
         if ($queue) {
             return $this->requestProcessedFile($queue);
         }
@@ -107,7 +108,7 @@ class TriangularUtility
         try {
             $body = $response->getBody();
             $data = json_decode($body, false, 512, JSON_THROW_ON_ERROR);
-            $hash = $data['hash'];
+            $hash = $data->hash;
         } catch (\Exception $e) {
             return false;
         }
@@ -148,12 +149,8 @@ class TriangularUtility
                 'X-API-KEY' => $settings['triangularApiKey']
             ],
         ]);
-        if ($response->getStatusCode() !== 200) {
-            return false;
-        }
-        $body = $response->getBody();
 
-        return true;
+        return $this->handleSvgResponse($queue->getSysFileUid(), $response);
     }
 
     protected function getFileObjectFromIdentifier($fileIdentifier): ?File
@@ -183,7 +180,7 @@ class TriangularUtility
             ->executeStatement();
 
         // delete queue item
-        $queue = $this->queueRepository->findOneByFileIdentifier($fileUid)->getFirst();
+        $queue = $this->queueRepository->findByFileUid($fileUid)->getFirst();
         if ($queue) {
             $this->queueRepository->remove($queue);
             $this->persistenceManager->persistAll();
