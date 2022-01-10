@@ -8,6 +8,19 @@ services:
     resource: '../Classes/*'
     exclude: '../Classes/Domain/Model/*'
 
+  querybuilder.metadata:
+    class: 'TYPO3\CMS\Core\Database\Query\QueryBuilder'
+    factory:
+      - '@TYPO3\CMS\Core\Database\ConnectionPool'
+      - 'getQueryBuilderForTable'
+    arguments:
+      - 'sys_file_metadata'
+
+  Blueways\BwPlaceholderImages\Utility\TriangularUtility:
+    public: true
+    arguments:
+      $metadataQueryBuilder: '@querybuilder.metadata'
+
   Blueways\BwPlaceholderImages\Command\RequestTriangularImageCommand:
     tags:
       - name: 'console.command'
@@ -15,3 +28,4 @@ services:
         description: 'Starts the routine of processing and downloading triangular images'
         # not required, defaults to false
         hidden: false
+

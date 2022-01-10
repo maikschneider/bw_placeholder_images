@@ -7,7 +7,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 class Queue extends AbstractEntity
 {
 
-    protected string $fileIdentifier = '';
+    protected string $sysFileUid = '';
 
     protected string $hash = '';
 
@@ -20,17 +20,17 @@ class Queue extends AbstractEntity
     /**
      * @return string
      */
-    public function getFileIdentifier(): string
+    public function getSysFileUid(): string
     {
-        return $this->fileIdentifier;
+        return $this->sysFileUid;
     }
 
     /**
-     * @param string $fileIdentifier
+     * @param string $sysFileUid
      */
-    public function setFileIdentifier(string $fileIdentifier): void
+    public function setSysFileUid(string $sysFileUid): void
     {
-        $this->fileIdentifier = $fileIdentifier;
+        $this->sysFileUid = $sysFileUid;
     }
 
     /**

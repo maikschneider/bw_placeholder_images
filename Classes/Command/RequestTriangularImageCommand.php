@@ -24,7 +24,7 @@ class RequestTriangularImageCommand extends Command
     {
         $this->setHelp('Starts the routine of processing and downloading triangular images. When passing a file identifier, only this file will be processed');
         $this->addArgument(
-            'fileIdentifier',
+            'sys_file',
             InputArgument::OPTIONAL,
             'The image file to request a triangular image for'
         );
@@ -35,9 +35,9 @@ class RequestTriangularImageCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());
 
-        if ($input->hasArgument('fileIdentifier')) {
-            $this->triangularUtility->processFile($input->getArgument('fileIdentifier'));
-            $io->writeln('Started triangular process for ' . $input->getArgument('fileIdentifier'));
+        if ($input->hasArgument('sys_file')) {
+            $this->triangularUtility->processFile((int)$input->getArgument('sys_file'));
+            $io->writeln('Started triangular process for sys_file with uid:' . $input->getArgument('sys_file'));
             return Command::SUCCESS;
         }
 
