@@ -4,6 +4,7 @@ namespace Blueways\BwPlaceholderImages\Utility;
 
 use Blueways\BwPlaceholderImages\Domain\Model\Queue;
 use Blueways\BwPlaceholderImages\Domain\Repository\QueueRepository;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -11,11 +12,15 @@ use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
 
 class TriangularUtility
 {
@@ -36,6 +41,8 @@ class TriangularUtility
 
     protected FileRepository $fileRepository;
 
+    protected UriBuilder $uriBuilder;
+
     public function __construct(
         ResourceFactory $resourceFactory,
         QueueRepository $queueRepository,
@@ -43,7 +50,8 @@ class TriangularUtility
         ConfigurationManager $configurationManager,
         TypoScriptService $typoScriptService,
         QueryBuilder $metadataQueryBuilder,
-        FileRepository $fileRepository
+        FileRepository $fileRepository,
+        UriBuilder $uriBuilder
     ) {
         $this->resourceFactory = $resourceFactory;
         $this->queueRepository = $queueRepository;
@@ -52,6 +60,7 @@ class TriangularUtility
         $this->typoScriptService = $typoScriptService;
         $this->metadataQueryBuilder = $metadataQueryBuilder;
         $this->fileRepository = $fileRepository;
+        $this->uriBuilder = $uriBuilder;
     }
 
     public function processFile(int $fileUid): bool
@@ -145,11 +154,15 @@ class TriangularUtility
 
         $client = new \GuzzleHttp\Client();
         $url = $settings['triangularServer'] . '/' . $queue->getHash();
-        $response = $client->request('GET', $url, [
-            'headers' => [
-                'X-API-KEY' => $settings['triangularApiKey']
-            ],
-        ]);
+        try {
+            $response = $client->request('GET', $url, [
+                'headers' => [
+                    'X-API-KEY' => $settings['triangularApiKey']
+                ],
+            ]);
+        } catch(GuzzleException $e) {
+            return false;
+        }
 
         return $this->handleSvgResponse($queue->getSysFileUid(), $response);
     }
@@ -192,7 +205,22 @@ class TriangularUtility
 
     private function getCallbackUrl(): string
     {
-        return '@TODO';
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $sites = $siteFinder->getAllSites();
+        $site = array_shift(array_values($sites));
+        $pid = $site->getRootPageId();
+
+        $extensionService = GeneralUtility::makeInstance(ExtensionService::class);
+        $argumentsPrefix = $extensionService->getPluginNamespace('bwplaceholderimages', 'triangular');
+        $arguments = [
+            'type' => '1641825616',
+            $argumentsPrefix => [
+                'action' => 'callback',
+                'controller' => 'Triangular',
+            ],
+        ];
+
+        return (string)$site->getRouter()->generateUri((string)$pid, $arguments);
     }
 
 }
