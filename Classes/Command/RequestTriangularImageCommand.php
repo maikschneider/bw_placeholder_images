@@ -36,7 +36,7 @@ class RequestTriangularImageCommand extends Command
         $io->title($this->getDescription());
 
         if ($input->hasArgument('fileIdentifier')) {
-            $this->triangularUtility->startProcess($input->getArgument('fileIdentifier'));
+            $this->triangularUtility->processFile($input->getArgument('fileIdentifier'));
             $io->writeln('Started triangular process for ' . $input->getArgument('fileIdentifier'));
             return Command::SUCCESS;
         }

@@ -8,7 +8,7 @@ create table tx_bwplaceholderimages_domain_model_queue (
 	pid    int(11) default 0 not null,
 
 	hash varchar(255) default '' not null,
-	fileIdentifier varchar(255) default '' not null,
+	file_identifier varchar(255) default '' not null,
 	status int(11) default 0 not null,
 
 	tstamp int(11) unsigned default 0 not null,

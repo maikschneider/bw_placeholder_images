@@ -4,5 +4,8 @@ plugin.bw_placeholder_images {
 		intersectionObserverJS = EXT:bw_placeholder_images/Resources/Public/JavaScript/intersection-observer.js
 		placeholderImagesJS = EXT:bw_placeholder_images/Resources/Public/JavaScript/PlaceholderImages2.js
 		placeholderImagesCSS = EXT:bw_placeholder_images/Resources/Public/Css/PlaceholderImages.css
+
+		triangularServer = http://triangula.blueways.de:8181/
+		triangularApiKey = D78i1FbsOTOFRyhMjEoa
 	}
 }

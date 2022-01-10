@@ -7,5 +7,7 @@ page {
 plugin.bw_placeholder_images {
 	settings {
 		fallbackColor = {$plugin.bw_placeholder_images.settings.fallbackColor}
+		triangularServer = {$plugin.bw_placeholder_images.settings.triangularServer}
+		triangularApiKey = {$plugin.bw_placeholder_images.settings.triangularApiKey}
 	}
 }

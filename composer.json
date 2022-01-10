@@ -17,9 +17,11 @@
   "require": {
     "typo3/cms-core": "^10.0 || ^11.0",
     "ksubileau/color-thief-php": "^1.3.0",
-    "ext-json": "*"
+    "ext-json": "*",
+    "typo3/cms-filemetadata": "^10.0 || ^11.0"
   },
   "require-dev": {
+    "helhum/typo3-console": "^7.0",
     "roave/security-advisories": "dev-latest",
     "typo3/cms-adminpanel": "^11.5",
     "typo3/cms-backend": "^11.5",
@@ -29,7 +31,6 @@
     "typo3/cms-extbase": "^11.5",
     "typo3/cms-extensionmanager": "^11.5",
     "typo3/cms-filelist": "^11.5",
-    "typo3/cms-filemetadata": "^11.5",
     "typo3/cms-fluid": "^11.5",
     "typo3/cms-fluid-styled-content": "^11.5",
     "typo3/cms-form": "^11.5",
@@ -48,7 +49,8 @@
     "typo3/cms-seo": "^11.5",
     "typo3/cms-setup": "^11.5",
     "typo3/cms-tstemplate": "^11.5",
-    "typo3/cms-viewpage": "^11.5"
+    "typo3/cms-viewpage": "^11.5",
+    "bk2k/bootstrap-package": "^12.0"
   },
   "autoload": {
     "psr-4": {
@@ -57,8 +59,6 @@
   },
   "extra": {
     "typo3/cms": {
-      "cms-package-dir": "{$vendor-dir}/typo3/cms",
-      "web-dir": "public",
       "extension-key": "bw_placeholder_images"
     }
   },
