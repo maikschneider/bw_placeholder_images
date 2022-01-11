@@ -1,5 +1,4 @@
 import $ = require('jquery');
-import Notification = TYPO3.Notification;
 
 class TriangularElement {
 	constructor() {
@@ -11,26 +10,30 @@ class TriangularElement {
 	protected onRefreshClick(e: Event) {
 		e.preventDefault();
 		const fileUid = parseInt($(e.currentTarget).attr('data-sys-file-uid'));
+		$('.form-triangular-placeholder').addClass('is-loading');
 		$.post(TYPO3.settings.ajaxUrls['triangular_refresh'], {
 			sysFileUid: fileUid
 		}).done((data) => {
-
-			const wrapper = $('.form-triangular-placeholder');
-
 			if (data.svg) {
-				$('svg:first-child', wrapper).remove();
-				wrapper.append(data.svg).removeClass('is-loading').addClass('is-downloaded');
+				$('.form-triangular-placeholder > svg').remove();
+				$('.form-triangular-placeholder').prepend(data.svg).removeClass('is-loading').addClass('is-downloaded');
 				return;
 			}
-
-			wrapper.addClass('is-loading');
+			if (!data.svg) {
+				console.log('message: is queued');
+			}
 		});
 	}
 
 	protected onDeleteClick(e: Event) {
 		e.preventDefault();
 		const fileUid = parseInt($(e.currentTarget).attr('data-sys-file-uid'));
-		console.log('onDeleteClick');
+		$.post(TYPO3.settings.ajaxUrls['triangular_delete'], {
+			sysFileUid: fileUid
+		}).done((data) => {
+			$('.form-triangular-placeholder').removeClass('is-loading').removeClass('	is-downloaded');
+			$('.form-triangular-placeholder > svg').remove();
+		});
 	}
 
 	protected onAbortClick(e: Event) {
@@ -42,7 +45,6 @@ class TriangularElement {
 			$('.form-triangular-placeholder').removeClass('is-loading');
 		});
 	}
-
 
 }
 

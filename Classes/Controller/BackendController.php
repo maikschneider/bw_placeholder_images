@@ -55,7 +55,22 @@ class BackendController
 
     public function triangularDelete(ServerRequestInterface $request): Response
     {
-        return new JsonResponse([$request]);
+        $body = $request->getParsedBody();
+        if (!isset($body['sysFileUid']) || !MathUtility::canBeInterpretedAsInteger($body['sysFileUid'])) {
+            return new JsonResponse(['message' => 'no valid sys_file uid'], 500);
+        }
+
+        // process file
+        $fileUid = (int)$body['sysFileUid'];
+        $metaData = $this->metaDataRepository->findByFileUid($fileUid);
+
+        if (!$metaData) {
+            return new JsonResponse(['message' => 'could not find meta datat of file'], 501);
+        }
+
+        $this->metaDataRepository->update($fileUid, ['triangular_placeholder' => '']);
+
+        return new JsonResponse(['message' => 'triangular image successfully removed']);
     }
 
     public function triangularRefresh(ServerRequestInterface $request): Response

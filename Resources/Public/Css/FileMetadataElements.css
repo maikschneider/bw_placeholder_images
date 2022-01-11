@@ -24,14 +24,16 @@
 }
 
 .form-triangular-placeholder.is-loading span.overlay {
-    min-height: 150px;
     min-width: 150px;
+    height: 100%;
+    min-height: 50px;
     display: inline-block;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .form-triangular-placeholder:not(.is-loading) + div #triangular-abort,
-.form-triangular-placeholder:not(.is-downloaded) + div #triangular-delete{
+.form-triangular-placeholder:not(.is-downloaded) + div #triangular-delete,
+.form-triangular-placeholder.is-downloaded + div #triangular-refresh {
     display: none;
 }
 
