@@ -3,21 +3,31 @@
 <div class="form-control-wrap">
     <div class="form-wizards-wrap">
         <div class="form-wizards-element">
-            <f:if condition="{svg}">
-                <div class="form-triangular-placeholder">
+            <div class="form-triangular-placeholder {f:if(condition: queue, then: 'is-loading')}">
+                <f:if condition="{svg}">
                     {svg->f:format.raw()}
-                </div>
-                <div class="form-triangular-actions">
-                    <button class="btn btn-default">
-                        <core:icon identifier="actions-refresh" size="small"/>
-                        <f:translate key="LLL:EXT:bw_placeholder_images/Resources/Private/Language/locallang_db.xlf:button.refresh"/>
-                    </button>
+                </f:if>
+                <span class="overlay"></span>
+                <core:icon identifier="spinner-circle-light" size="default"/>
+            </div>
+            <div class="form-triangular-actions">
+                <button class="btn btn-default">
+                    <core:icon identifier="actions-refresh" size="small"/>
+                    <f:translate key="LLL:EXT:bw_placeholder_images/Resources/Private/Language/locallang_db.xlf:button.refresh"/>
+                </button>
+                <f:if condition="{svg}">
                     <button class="btn btn-default">
                         <core:icon identifier="actions-delete" size="small"/>
                         <f:translate key="LLL:EXT:bw_placeholder_images/Resources/Private/Language/locallang_db.xlf:button.delete"/>
                     </button>
-                </div>
-            </f:if>
+                </f:if>
+                <f:if condition="{queue}">
+                    <button class="btn btn-default">
+                        <core:icon identifier="actions-close" size="small"/>
+                        <f:translate key="LLL:EXT:bw_placeholder_images/Resources/Private/Language/locallang_db.xlf:button.abort"/>
+                    </button>
+                </f:if>
+            </div>
             <div class="form-wizards-items-bottom">{fieldWizardHtml->f:format.raw()}</div>
         </div>
     </div>

@@ -19,6 +19,9 @@
             <trans-unit id="button.refresh">
                 <source>Neu laden</source>
             </trans-unit>
+            <trans-unit id="button.abort">
+                <source>Abbrechen</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

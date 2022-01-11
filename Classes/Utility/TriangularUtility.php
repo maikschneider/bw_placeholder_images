@@ -223,4 +223,9 @@ class TriangularUtility
         return (string)$site->getRouter()->generateUri((string)$pid, $arguments);
     }
 
+    public function getQueueOfFile(int $sysFileUid)
+    {
+        return $this->queueRepository->findByFileUid($sysFileUid)->getFirst();
+    }
+
 }
