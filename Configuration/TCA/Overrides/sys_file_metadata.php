@@ -19,6 +19,7 @@ $additionalColumns = [
         'label' => 'LLL:EXT:bw_placeholder_images/Resources/Private/Language/locallang_db.xlf:sys_file_metadata.triangular_placeholder',
         'config' => [
             'type' => 'input',
+            'renderType' => 'triangularPlaceholder'
         ]
     ]
 ];

@@ -1,0 +1,8 @@
+.form-triangular-placeholder {
+    max-width: 150px;
+}
+
+.form-triangular-placeholder svg {
+    max-width: 100%;
+    height: auto;
+}

@@ -15,3 +15,9 @@ defined('TYPO3_MODE') || die('Access denied');
         Blueways\BwPlaceholderImages\Controller\TriangularController::class => 'callback',
     ]
 );
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1641888755] = [
+    'nodeName' => 'triangularPlaceholder',
+    'priority' => '70',
+    'class' => \Blueways\BwPlaceholderImages\Form\Element\TriangularPlaceholderElement::class,
+];
