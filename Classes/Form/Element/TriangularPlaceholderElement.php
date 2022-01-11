@@ -3,6 +3,8 @@
 namespace Blueways\BwPlaceholderImages\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class TriangularPlaceholderElement extends AbstractFormElement
 {
@@ -33,25 +35,14 @@ class TriangularPlaceholderElement extends AbstractFormElement
         $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
-        $mainFieldHtml = [];
-        $mainFieldHtml[] = '<div class="form-control-wrap">';
-        $mainFieldHtml[] = '<div class="form-wizards-wrap">';
-        $mainFieldHtml[] = '<div class="form-wizards-element">';
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename('EXT:bw_placeholder_images/Resources/Private/Templates/TriangularPlaceholderElement.html');
+        $view->assign('svg', $this->data['parameterArray']['itemFormElValue']);
+        $view->assign('fieldWizardHtml', $fieldWizardHtml);
 
-        if ($this->data['parameterArray']['itemFormElValue']) {
-            $mainFieldHtml[] = '<div class="form-triangular-placeholder">' . $this->data['parameterArray']['itemFormElValue'] . '</div>';
-        }
-
-        // Main HTML of element done here ...
-        $mainFieldHtml[] = '</div>';
-        $mainFieldHtml[] = '<div class="form-wizards-items-bottom">';
-        $mainFieldHtml[] = $fieldWizardHtml;
-        $mainFieldHtml[] = '</div>';
-        $mainFieldHtml[] = '</div>';
-        $mainFieldHtml[] = '</div>';
-
-        $resultArray['html'] = implode(LF, $mainFieldHtml);
+        $resultArray['html'] = $view->render();
         $resultArray['stylesheetFiles'][] = 'EXT:bw_placeholder_images/Resources/Public/Css/FileMetadataElements.css';
+
         return $resultArray;
     }
 }

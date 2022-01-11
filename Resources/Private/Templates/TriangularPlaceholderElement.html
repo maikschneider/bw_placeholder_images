@@ -1,0 +1,12 @@
+<div class="form-control-wrap">
+    <div class="form-wizards-wrap">
+        <div class="form-wizards-element">
+            <f:if condition="{svg}">
+                <div class="form-triangular-placeholder">
+                    {svg->f:format.raw()}
+                </div>
+            </f:if>
+            <div class="form-wizards-items-bottom">{fieldWizardHtml->f:format.raw()}</div>
+        </div>
+    </div>
+</div>
