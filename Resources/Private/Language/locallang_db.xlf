@@ -16,6 +16,9 @@
             <trans-unit id="button.delete">
                 <source>Delete</source>
             </trans-unit>
+            <trans-unit id="button.refresh">
+                <source>Request new</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
