@@ -89,22 +89,31 @@ class TriangularUtility
         $fileContent = $file->getForLocalProcessing();
         $callbackUrl = $this->getCallbackUrl();
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('POST', $settings['triangularServer'], [
-            'headers' => [
-                'X-API-KEY' => $settings['triangularApiKey']
-            ],
-            'multipart' => [
-                [
-                    'name' => 'callbackUrl',
-                    'contents' => $callbackUrl
+        try {
+            $response = $client->request('POST', $settings['triangularServer'], [
+                'headers' => [
+                    'X-API-KEY' => $settings['triangularApiKey']
                 ],
-                [
-                    'name' => 'file',
-                    'contents' => \GuzzleHttp\Psr7\Utils::tryFopen($fileContent, 'r'),
-                    'filename' => $file->getName(),
+                'multipart' => [
+                    [
+                        'name' => 'callbackUrl',
+                        'contents' => $callbackUrl
+                    ],
+                    [
+                        'name' => 'file',
+                        'contents' => \GuzzleHttp\Psr7\Utils::tryFopen($fileContent, 'r'),
+                        'filename' => $file->getName(),
+                    ]
                 ]
-            ]
-        ]);
+            ]);
+        } catch (\Exception $e) {
+            // queue on error
+            $queue = new Queue();
+            $queue->setSysFileUid($fileUid);
+            $this->queueRepository->add($queue);
+            $this->persistenceManager->persistAll();
+            return false;
+        }
         if ($response->getStatusCode() !== 200) {
             return false;
         }

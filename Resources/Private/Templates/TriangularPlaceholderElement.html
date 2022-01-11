@@ -3,12 +3,13 @@
 <div class="form-control-wrap">
     <div class="form-wizards-wrap">
         <div class="form-wizards-element">
-            <div class="form-triangular-placeholder {f:if(condition: queue, then: 'is-loading')} {f:if(condition: svg, then: 'is-downloaded')}">
+            <div class="form-triangular-placeholder {f:if(condition: queue, then: 'is-waiting')} {f:if(condition: svg, then: 'is-downloaded')}">
                 <f:if condition="{svg}">
                     {svg->f:format.raw()}
                 </f:if>
                 <span class="overlay"></span>
                 <core:icon identifier="spinner-circle-light" size="default"/>
+                <core:icon identifier="actions-clock" size="default"/>
             </div>
             <div class="form-triangular-actions">
                 <button class="btn btn-default" id="triangular-refresh" data-sys-file-uid="{sysFileUid}">

@@ -19,14 +19,13 @@
 		"experimentalDecorators": true,
 		"paths": {
 			"TYPO3/CMS/BwPlaceholderImages/*": [
-				"Resources/Private/TypeScript/*",
-				"Resources/Public/JavaScript/*"
+				"Resources/Private/TypeScript/*"
 			],
 			"TYPO3/CMS/Backend/*": [
-				"public/typo3/sysext/backend/Resources/Private/TypeScript/*"
+				"typo3_src/TypeScript/backend/Resources/Public/TypeScript/*"
 			],
 			"TYPO3/CMS/Core/*": [
-				"public/typo3/sysext/core/Resources/Private/TypeScript/*"
+				"typo3_src/TypeScript/core/Resources/Public/TypeScript/*"
 			]
 		},
 		"typeRoots": [
