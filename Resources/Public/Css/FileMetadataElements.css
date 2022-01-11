@@ -30,10 +30,10 @@
     background: rgba(0,0,0,0.5);
 }
 
-.form-triangular-placeholder:not(.is-loading) + div #triangular-abort {
+.form-triangular-placeholder:not(.is-loading) + div #triangular-abort,
+.form-triangular-placeholder:not(.is-downloaded) + div #triangular-delete{
     display: none;
 }
-
 
 .form-triangular-actions {
     margin: 10px 0;

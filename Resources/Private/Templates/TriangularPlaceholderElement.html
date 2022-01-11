@@ -3,7 +3,7 @@
 <div class="form-control-wrap">
     <div class="form-wizards-wrap">
         <div class="form-wizards-element">
-            <div class="form-triangular-placeholder {f:if(condition: queue, then: 'is-loading')}">
+            <div class="form-triangular-placeholder {f:if(condition: queue, then: 'is-loading')} {f:if(condition: svg, then: 'is-downloaded')}">
                 <f:if condition="{svg}">
                     {svg->f:format.raw()}
                 </f:if>
@@ -15,18 +15,14 @@
                     <core:icon identifier="actions-refresh" size="small"/>
                     <f:translate key="LLL:EXT:bw_placeholder_images/Resources/Private/Language/locallang_db.xlf:button.refresh"/>
                 </button>
-                <f:if condition="{svg}">
-                    <button class="btn btn-default" id="triangular-delete" data-sys-file-uid="{sysFileUid}">
-                        <core:icon identifier="actions-delete" size="small"/>
-                        <f:translate key="LLL:EXT:bw_placeholder_images/Resources/Private/Language/locallang_db.xlf:button.delete"/>
-                    </button>
-                </f:if>
-                <f:if condition="{queue}">
-                    <button class="btn btn-default" id="triangular-abort" data-sys-file-uid="{sysFileUid}">
-                        <core:icon identifier="actions-close" size="small"/>
-                        <f:translate key="LLL:EXT:bw_placeholder_images/Resources/Private/Language/locallang_db.xlf:button.abort"/>
-                    </button>
-                </f:if>
+                <button class="btn btn-default" id="triangular-delete" data-sys-file-uid="{sysFileUid}">
+                    <core:icon identifier="actions-delete" size="small"/>
+                    <f:translate key="LLL:EXT:bw_placeholder_images/Resources/Private/Language/locallang_db.xlf:button.delete"/>
+                </button>
+                <button class="btn btn-default" id="triangular-abort" data-sys-file-uid="{sysFileUid}">
+                    <core:icon identifier="actions-close" size="small"/>
+                    <f:translate key="LLL:EXT:bw_placeholder_images/Resources/Private/Language/locallang_db.xlf:button.abort"/>
+                </button>
             </div>
             <div class="form-wizards-items-bottom">{fieldWizardHtml->f:format.raw()}</div>
         </div>
