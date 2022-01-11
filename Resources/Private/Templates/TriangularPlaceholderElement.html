@@ -11,18 +11,18 @@
                 <core:icon identifier="spinner-circle-light" size="default"/>
             </div>
             <div class="form-triangular-actions">
-                <button class="btn btn-default">
+                <button class="btn btn-default" data-sys-file-uid="{sysFileUid}">
                     <core:icon identifier="actions-refresh" size="small"/>
                     <f:translate key="LLL:EXT:bw_placeholder_images/Resources/Private/Language/locallang_db.xlf:button.refresh"/>
                 </button>
                 <f:if condition="{svg}">
-                    <button class="btn btn-default">
+                    <button class="btn btn-default" data-sys-file-uid="{sysFileUid}">
                         <core:icon identifier="actions-delete" size="small"/>
                         <f:translate key="LLL:EXT:bw_placeholder_images/Resources/Private/Language/locallang_db.xlf:button.delete"/>
                     </button>
                 </f:if>
                 <f:if condition="{queue}">
-                    <button class="btn btn-default">
+                    <button class="btn btn-default" data-sys-file-uid="{sysFileUid}">
                         <core:icon identifier="actions-close" size="small"/>
                         <f:translate key="LLL:EXT:bw_placeholder_images/Resources/Private/Language/locallang_db.xlf:button.abort"/>
                     </button>

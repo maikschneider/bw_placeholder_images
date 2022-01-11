@@ -3,10 +3,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   plugins: [new MiniCssExtractPlugin({
-    filename: 'Resources/Public/Css/backend/IconSelection.css',
+    filename: 'Resources/Public/Css/backend/TriangularElement.css',
   })],
   entry: {
-    IconSelection: './Resources/Private/TypeScript/IconSelection.ts'
+      TriangularElement: './Resources/Private/TypeScript/TriangularElement.ts'
   },
   output: {
     filename: 'Resources/Public/JavaScript/[name].js',
