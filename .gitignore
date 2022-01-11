@@ -4,3 +4,4 @@ vendor
 public
 !Resources/Public
 var
+node_modules
