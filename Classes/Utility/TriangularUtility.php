@@ -143,17 +143,6 @@ class TriangularUtility
         return true;
     }
 
-    protected function getTypoScript(): array
-    {
-        try {
-            $typoscript = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-        } catch (InvalidConfigurationTypeException $e) {
-            return [];
-        }
-        $settings = $this->typoScriptService->convertTypoScriptArrayToPlainArray($typoscript);
-        return $settings['plugin']['bw_placeholder_images']['settings'];
-    }
-
     public function requestProcessedFile(Queue $queue): bool
     {
 
@@ -170,22 +159,11 @@ class TriangularUtility
                     'X-API-KEY' => $settings['triangularApiKey']
                 ],
             ]);
-        } catch(GuzzleException $e) {
+        } catch (GuzzleException $e) {
             return false;
         }
 
         return $this->handleSvgResponse($queue->getSysFileUid(), $response);
-    }
-
-    protected function getFileObjectFromIdentifier($fileIdentifier): ?File
-    {
-        $pathSegments = explode(':', $fileIdentifier);
-        try {
-            $storage = count($pathSegments) === 1 ? $this->resourceFactory->getDefaultStorage() : $this->resourceFactory->getStorageObject((int)$pathSegments[0]);
-            return $storage->getFile(end($pathSegments));
-        } catch (Exception $e) {
-            return null;
-        }
     }
 
     private function handleSvgResponse(int $fileUid, ResponseInterface $response): bool
