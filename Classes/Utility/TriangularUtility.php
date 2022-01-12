@@ -7,6 +7,7 @@ use Blueways\BwPlaceholderImages\Domain\Repository\QueueRepository;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Resource\File;
@@ -80,7 +81,7 @@ class TriangularUtility
         }
 
         // do request
-        $settings = $this->getTypoScript();
+        $settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('bw_placeholder_images');
         if (!$settings['triangularServer'] || !$settings['triangularApiKey']) {
             return false;
         }
@@ -156,7 +157,7 @@ class TriangularUtility
     public function requestProcessedFile(Queue $queue): bool
     {
 
-        $settings = $this->getTypoScript();
+        $settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('bw_placeholder_images');
         if (!$settings['triangularServer'] || !$settings['triangularApiKey']) {
             return false;
         }
