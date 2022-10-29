@@ -114,14 +114,12 @@ class LazyImageViewHelper extends AbstractTagBasedViewHelper
      * Resizes a given image (if required) and renders the respective img tag
      *
      * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Image/
-     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      * @return string Rendered tag
      */
     public function render()
     {
         if ((is_null($this->arguments['src']) && is_null($this->arguments['image'])) || (!is_null($this->arguments['src']) && !is_null($this->arguments['image']))) {
-            throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('You must either specify a string src or a File object.',
-                1382284106);
+            throw new \RuntimeException('You must either specify a string src or a File object.', 1382284106);
         }
 
         try {
@@ -182,20 +180,20 @@ class LazyImageViewHelper extends AbstractTagBasedViewHelper
                 $sizeConf = $this->arguments[$size];
 
                 // create image uri for speficify size setting
-                $cropString = $sizeConf['crop'];
-                if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {
+                $cropString = $sizeConf['crop'] ?? '';
+                if (!$cropString && $image->hasProperty('crop') && $image->getProperty('crop')) {
                     $cropString = $image->getProperty('crop');
                 }
                 $cropVariantCollection = CropVariantCollection::create((string)$cropString);
                 $cropVariant = $sizeConf['cropVariant'] ?: 'default';
                 $cropArea = $cropVariantCollection->getCropArea($cropVariant);
                 $processingInstructions = [
-                    'width' => $sizeConf['width'],
-                    'height' => $sizeConf['height'],
-                    'minWidth' => $sizeConf['minWidth'],
-                    'minHeight' => $sizeConf['minHeight'],
-                    'maxWidth' => $sizeConf['maxWidth'],
-                    'maxHeight' => $sizeConf['maxHeight'],
+                    'width' => $sizeConf['width'] ?? '',
+                    'height' => $sizeConf['height'] ?? '',
+                    'minWidth' => $sizeConf['minWidth'] ?? '',
+                    'minHeight' => $sizeConf['minHeight'] ?? '',
+                    'maxWidth' => $sizeConf['maxWidth'] ?? '',
+                    'maxHeight' => $sizeConf['maxHeight'] ?? '',
                     'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
                 ];
                 $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);

@@ -60,7 +60,7 @@ class ResponsiveBackgroundImageViewHelper extends AbstractViewHelper
     ) {
         $src = $arguments['src'] ?? '';
         $image = $arguments['image'];
-        $absolute = (bool)$arguments['absolute'];
+        $absolute = isset($arguments['absolute']) && (bool)$arguments['absolute'];
 
         $treatIdAsReference = $arguments['treatIdAsReference'];
 
@@ -78,8 +78,8 @@ class ResponsiveBackgroundImageViewHelper extends AbstractViewHelper
             $id = 'p' . $image->getHashedIdentifier() . $random->generateRandomHexString(4);
 
             $base64ImageService = self::getBase64ImageService();
-            $svg = $base64ImageService->generateSvg($dominantColors, $arguments['width'] ? $arguments['width'] : 1,
-                $arguments['height'] ? $arguments['height'] : 1);
+            $svg = $base64ImageService->generateSvg($dominantColors, $arguments['width'] ?? 1,
+                $arguments['height'] ?? 1);
             //$css = '#' . $id . ':after { background-color: ' . $colors[1][1] . '; }';
             $css = '#' . $id . ':after { background-image: url("' . $svg . '") }';
             $dataAttr = '';
@@ -96,21 +96,21 @@ class ResponsiveBackgroundImageViewHelper extends AbstractViewHelper
                 $sizeConf = $arguments[$size];
 
                 // create image uri for speficify size setting
-                $cropString = $sizeConf['crop'];
-                if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {
+                $cropString = $sizeConf['crop'] ?? '';
+                if (!$cropString && $image->hasProperty('crop') && $image->getProperty('crop')) {
                     $cropString = $image->getProperty('crop');
                 }
                 $cropVariantCollection = CropVariantCollection::create((string)$cropString);
-                $cropVariant = $sizeConf['cropVariant'] ?: 'default';
+                $cropVariant = $sizeConf['cropVariant'] ?? 'default';
                 $cropArea = $cropVariantCollection->getCropArea($cropVariant);
                 $processingInstructions = [
-                    'width' => $sizeConf['width'],
-                    'height' => $sizeConf['height'],
-                    'minWidth' => $sizeConf['minWidth'],
-                    'minHeight' => $sizeConf['minHeight'],
-                    'maxWidth' => $sizeConf['maxWidth'],
-                    'maxHeight' => $sizeConf['maxHeight'],
-                    'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
+                    'width' => $sizeConf['width'] ?? '',
+                    'height' => $sizeConf['height'] ?? '',
+                    'minWidth' => $sizeConf['minWidth'] ?? '',
+                    'minHeight' => $sizeConf['minHeight'] ?? '',
+                    'maxWidth' => $sizeConf['maxWidth'] ?? '',
+                    'maxHeight' => $sizeConf['maxHeight'] ?? '',
+                    'crop' => $cropArea->isEmpty() ? '' : $cropArea->makeAbsoluteBasedOnFile($image),
                 ];
                 $processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
                 $imageUri = $imageService->getImageUri($processedImage, $absolute);
