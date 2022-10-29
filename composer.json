@@ -3,14 +3,10 @@
   "license": "MIT",
   "type": "typo3-cms-extension",
   "description": "Inline SVG placeholder images with lazy loading",
-  "homepage": "https://blueways.de",
-  "keywords": [
-    "TYPO3 CMS"
-  ],
   "authors": [
     {
       "name": "Maik Schneider",
-      "email": "m.schneider@blueways.de",
+      "email": "schneider.maik@me.com",
       "role": "Developer"
     }
   ],

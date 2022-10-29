@@ -15,11 +15,10 @@ Lazy loading code inspired by [Mika Tuupola](https://appelsiini.net/projects/laz
 
 ## Installation
 
-This extension is currently composer based. The next version will have shipped dependencies to install in non composer TYPO3 installations.
+This extension is installable only via composer.
 
-- install dependencies ```composer require ksubileau/color-thief-php```
-- install Extension via Extension Manager
-- select static typoscript template
+- ```composer require blueways/bw-placeholder-images```
+- include TypoScript template
 
 ## Configuration
 
